@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  php:
+    image: php:latest
+    volumes:
+      - ./app:/var/www
+    ports:
+      - "9000:9000"
+      - "25:25"
+    networks:
+      - default
+
+  web:
+    image: nginx:latest
+    volumes:
+      - ./app:/var/www:ro
+      - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
+    environment:
+      APP_DOMAIN: ${APP_DOMAIN}
+    ports:
+      - "80:80"
+    links:
+      - php
+    depends_on:
+      - php
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge
