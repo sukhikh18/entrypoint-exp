@@ -2,12 +2,17 @@ version: '3'
 
 services:
   php:
-    image: php:8.2-fpm
+    build: ./php
     volumes:
       - ./app:/var/www
     ports:
       - "9000:9000"
       - "25:25"
+    networks:
+      - default
+
+  supervisor:
+    build: ./supervisor
     networks:
       - default
 
